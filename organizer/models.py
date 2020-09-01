@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.core.urlresolvers import reverse
 # Create your models here.
 class Tag(models.Model):
     name = models.CharField(max_length=31, unique=True)
@@ -11,6 +11,11 @@ class Tag(models.Model):
     # ability to affect existing behaviour
     class Meta:
         ordering = ['name']    
+
+    # to get url for the pattern
+    def get_absolute_url(self):
+        return reverse('organizer_tag_detail', kwargs={'slug':self.slug})    # can use args insted of kwargs
+
 
 class Startup(models.Model):
     name = models.CharField(max_length=31, db_index=True)
@@ -28,6 +33,10 @@ class Startup(models.Model):
     class Meta:
         ordering = ['name']
         get_latest_by = 'founded_date'
+
+    def get_absolute_url(self):
+        return reverse('organizer_startup_detail', kwargs={'slug':self.slug})
+
 
 class NewsLink(models.Model):
     title = models.CharField(max_length=63)
